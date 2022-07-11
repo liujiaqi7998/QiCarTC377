@@ -1,0 +1,108 @@
+/*
+ * TIMER_thread.cpp
+ *
+ *  Created on: 2021年12月1日
+ *      Author: huyongliang
+ */
+
+#include <TIMER_thread.h.bak>
+
+//1>定时器线程
+//2>按键释放信号量
+//3>蜂鸣器邮箱传值
+//rt-thread提供10个定时器
+
+/* 定时器的控制块 */
+static rt_timer_t timer2;
+
+rt_sem_t  key_sem;
+
+void time_pit2(void *parameter);
+void sem_button(void *parameter);
+
+
+  int timer_init(void) {
+
+    /* 创建定时器2 单次定时器 */
+    timer2 = rt_timer_create("timer2", time_pit2,
+                             RT_NULL, 1,//每ms运行一次
+                             RT_TIMER_FLAG_PERIODIC);
+    /* 启动定时器2 */
+    if (timer2 != RT_NULL)  rt_timer_start(timer2);
+
+    return 0;
+}
+
+  void sem_button_init(void) {
+
+      rt_timer_t button;
+      Button but = Button(KEY,act_level,PULL_UP);
+
+      key_sem = rt_sem_create("key1", 0, RT_IPC_FLAG_FIFO);  //创建按键的信号量
+
+      button = rt_timer_create("button", sem_button, RT_NULL, 20, RT_TIMER_FLAG_PERIODIC);
+
+      if(button!= RT_NULL)
+      {
+          rt_timer_start(button);
+      }
+}
+/* 导出到 msh 命令列表中 */
+  MSH_CMD_EXPORT(timer_init,clock);
+
+
+/* 定时器2超时函数 */
+  void time_pit2(void *parameter)
+{
+      rt_uint32_t mb_str;
+      static uint32 time=0;
+
+      while(time<25){
+              time++;
+              if(0 == (time%5))
+          {
+
+              mb_str=time;
+              rt_kprintf("timer2\n");
+              rt_mb_send(&buz_mail,(unsigned long)&mb_str);//给蜂鸣器发送邮箱以确认元素
+              rt_kprintf("send %d\n",mb_str);
+//              rt_exit_critical();
+              //摄像头信号采集、归一化、PID控制
+/*********************************************************摄像头采集函数******************************************************************************/
+//              extern rt_sem_t camera_sem;//摄像头信号量
+//              mt9v03x_finish_flag = 1; //采集图像用的标志位置1
+//              rt_sem_release(camera_sem); //采集完图像后释放摄像头信号量
+/***************************************************************************************************************************************/
+              //采集编码器数据
+              //控制电机转动
+
+//              rt_thread_mdelay(10);
+          }
+      }
+
+}
+
+  void sem_button(void *parameter){
+
+       static uint8 key1_last_status;
+       uint8 key1_status;
+       GPIO gpio=GPIO(KEY,GPI,GPIO_HIGH,PULLUP);
+       gpio.Init();
+
+          //读取当前按键状态
+          key1_status = gpio.Pin_Get();
+          //检测到按键按下之后并放开 释放一次信号量
+          if(key1_status && !key1_last_status)
+          {
+              rt_sem_release(key_sem);
+          }
+          //保存按键状态
+          key1_last_status = key1_status;
+
+          rt_kprintf("button\n");
+          rt_thread_mdelay(10);
+
+}
+
+
+

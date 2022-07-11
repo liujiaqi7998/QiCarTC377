@@ -1,0 +1,29 @@
+/*
+ * Button.h
+ *
+ *  Created on: 2021Äê12ÔÂ7ÈÕ
+ *      Author: huyongliang
+ */
+
+#ifndef CODE_THREAD_BUTTON_THREAD_H_BAK_
+#define CODE_THREAD_BUTTON_THREAD_H_BAK_
+
+#include "YL_Library.h"
+#include "OJ_Library.h"
+
+#include "Motor_run.h"
+
+void Button_init(void);
+void button_int (void);
+void button_loop (void);
+
+void button1_Click (void);
+void button1_longclick (void);
+void button2_Click (void);
+void button2_longclick (void);
+void button3_Click (void);
+void button3_longclick (void);
+void button4_Click (void);
+void button4_longclick (void);
+
+#endif /* CODE_THREAD_BUTTON_THREAD_H_BAK_ */

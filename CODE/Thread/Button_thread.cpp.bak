@@ -1,0 +1,94 @@
+///*
+// * Button.cpp
+// *
+// *  Created on: 2021年12月7日
+// *      Author: huyongliang
+// */
+//
+//#include "Thread/Button_thread.h"
+//
+///* 定时器的控制块 */
+//static rt_timer_t button;
+//
+//
+//void button_pit(void *parameter);
+//
+//Button button1 = Button(P22_0);
+//Button button2 = Button(P22_2);
+//Button button3 = Button(P22_1);
+//Button button4 = Button(P22_3);
+//
+//
+//  void Button_init(void) {
+//
+//      button1.attachClick(button1_Click);
+//      button2.attachClick(button2_Click);
+//      button3.attachClick(button3_Click);
+//      button4.attachClick(button4_Click);
+//
+//      button1.attachLongPressStart(button1_longclick);
+//      button2.attachLongPressStart(button2_longclick);
+//      button3.attachLongPressStart(button3_longclick);
+//      button4.attachLongPressStart(button4_longclick);
+//
+//      button = rt_timer_create("Button", button_pit,
+//                             RT_NULL, 1,//每ms运行一次
+//                             RT_TIMER_FLAG_PERIODIC);
+//
+//      if (button != RT_NULL)  rt_timer_start(button);
+//
+//}
+//
+//  void button_pit(void *parameter)
+//{
+//
+//      while(1){
+//                  button1.tick();
+//                  button2.tick();
+//                  button3.tick();
+//                  button4.tick();
+//
+//              rt_kprintf("timer1\n");
+//              rt_thread_mdelay(5);
+//      }
+//
+//}
+//
+//  /* 电路板1号按钮点击回调，短按左轮正转加5，长按停车*/
+//  void button1_Click ()
+//  {
+//      add_speed(LEFT_Motor, 5);
+//  }
+//  void button1_longclick ()
+//  {
+//      set_speed(LEFT_Motor, 0);
+//  }
+//
+//  /* 电路板2号按钮点击回调，短按左轮正转减加5，长按设置到100*/
+//  void button2_Click ()
+//  {
+//      reduce_speed(LEFT_Motor, 5);
+//  }
+//  void button2_longclick ()
+//  {
+//      set_speed(LEFT_Motor, 100);
+//  }
+//  /* 电路板3号按钮点击回调，短按右轮正转加5，长按停车*/
+//  void button3_Click ()
+//  {
+//      add_speed(RIGHT_Motor, 5);
+//  }
+//  void button3_longclick ()
+//  {
+//      set_speed(RIGHT_Motor, 0);
+//  }
+//  /* 电路板4号按钮点击回调，短按右轮正转减加5，长按设置到100*/
+//  void button4_Click ()
+//  {
+//      reduce_speed(RIGHT_Motor, 5);
+//  }
+//  void button4_longclick ()
+//  {
+//      set_speed(RIGHT_Motor, 100);
+//  }
+//

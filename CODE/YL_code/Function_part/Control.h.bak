@@ -1,0 +1,25 @@
+/*
+ * Control.h
+ *
+ *  Created on: 2021Äê12ÔÂ27ÈÕ
+ *      Author: huyongliang
+ */
+
+#ifndef CODE_YL_CODE_FUNCTION_PART_CONTROL_H_BAK_
+#define CODE_YL_CODE_FUNCTION_PART_CONTROL_H_BAK_
+
+
+#include "YL_Library.h"
+#include "OJ_Library.h"
+
+
+
+
+void button_init(void);
+
+
+
+
+
+#endif /* CODE_YL_CODE_FUNCTION_PART_CONTROL_H_BAK_ */
+

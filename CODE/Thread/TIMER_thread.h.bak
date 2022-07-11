@@ -1,0 +1,25 @@
+/*
+ * TIMER_thread.h
+ *
+ *  Created on: 2021Äê12ÔÂ1ÈÕ
+ *      Author: huyongliang
+ */
+
+#ifndef CODE_THREAD_TIMER_THREAD_H_BAK_
+#define CODE_THREAD_TIMER_THREAD_H_BAK_
+
+#include "BEEP_thread.h.bak"
+#include "YL_Library.h"
+#include "OJ_Library.h"
+#include "Qi_Library.h"
+
+
+#define KEY P02_6
+#define act_level 1
+#define PULL_UP 1
+
+int timer_init(void);
+void sem_button_init(void);
+
+
+#endif /* CODE_THREAD_TIMER_THREAD_H_BAK_ */

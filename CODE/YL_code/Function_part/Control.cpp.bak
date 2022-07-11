@@ -1,0 +1,184 @@
+/*
+ * Control.cpp
+ *
+ *  Created on: 2021年12月27日
+ *      Author: huyongliang
+ */
+
+
+#include "YL_code/Function_part/Control.h"
+#include "ui_font.h"
+#include "display.h"
+#include "Screen.h"
+
+
+//// 线程控制块指针，创建线程时的标准操作
+//static rt_thread_t button_tid = RT_NULL;
+/* 定时器的控制块 */
+static rt_timer_t button;
+
+void button_pit(void *parameter);
+void key_scan(void);
+void l_click ();
+void r_click ();
+void e_click ();
+void c_click ();
+
+Button left = Button(P22_3);//K1
+Button right = Button(P22_1);//K2
+Button enter = Button(P22_2);//K3
+Button change = Button(P22_0);//K4
+
+LED led1 = LED(P20_9, Low_level_lighting);
+
+
+
+  void button_init(void) {
+
+      led1.Init();
+
+      button = rt_timer_create("Button", button_pit,
+                                   RT_NULL, 1,//每ms运行一次
+                                   RT_TIMER_FLAG_PERIODIC);
+
+      if (button != RT_NULL)  rt_timer_start(button);
+
+//      button_tid = rt_thread_create("button", // 线程名称
+//                                     button_entry, // 线程入口函数
+//                                     RT_NULL, // 线程参数，RT_NULL表示无参，类似于void
+//                                     256,
+//                                     20,
+//                                     10);
+//
+//         //启动显示线程
+//         if(button_tid != RT_NULL )
+//         {
+//             rt_thread_startup(button_tid);
+//         }
+}
+
+  MSH_CMD_EXPORT(button_init,enter);
+
+  /* 按键检测线程入口函数*/
+  void button_pit(void *parameter)
+  {
+      rt_kprintf("button thread has entered\n");
+
+      /* 初始化按键 */
+      left.attachLongPressStart(l_click);
+      right.attachLongPressStart(r_click);
+      enter.attachLongPressStart(e_click);
+      change.attachLongPressStart(c_click);
+
+      while (1)
+      {
+          /* 检测按键是否按下 */
+          key_scan();
+          rt_thread_delay(5);
+      }
+
+}
+
+
+  void key_scan(void){
+
+  left.tick();
+  right.tick();
+  enter.tick();
+  change.tick();
+
+}
+
+//按键用信号量控制
+
+  void l_click ()
+  {
+      led1.LED_Toggle();
+      rt_kprintf("left is pressed!\n");
+      if(menu==1){
+            flag--;
+            if(flag<1) flag=1;
+            Inter_Screen.Clear(IPS_WHITE);
+            switch (flag){
+                case 1:   dis_curImg((uint8*)gImage_set);break;
+                case 2:   dis_curImg((uint8*)gImage_go); break;
+                case 3:   dis_curImg((uint8*)gImage_mes);break;
+            }
+
+      }else{
+            par+=0.1;
+      }
+      rt_kprintf(" menu is %d  flag is %d   \n",menu,flag);
+      rt_kprintf(" par is %.2lf \n",par);
+
+}
+
+  void r_click ()
+  {
+      led1.LED_Toggle();
+      rt_kprintf("right is pressed!\n");
+      if(menu==1){
+            flag++;
+            if(flag>3) flag=3;
+            Inter_Screen.Clear(IPS_WHITE);
+            switch (flag){
+                case 1:   dis_curImg((uint8*)gImage_set);break;
+                case 2:   dis_curImg((uint8*)gImage_go); break;
+                case 3:   dis_curImg((uint8*)gImage_mes);break;
+            }
+      }else{
+            par-=0.1;
+      }
+      rt_kprintf(" menu is %d  flag is %d   \n",menu,flag);
+      rt_kprintf(" par is %.2lf \n",par);
+
+}
+
+  void e_click (){
+
+      //enter the function ui
+      led1.LED_Toggle();
+      rt_kprintf("enter is pressed!\n");
+
+      if (flag==1){
+          //进入function界面
+          if(menu==1) {
+              Inter_Screen.Clear(IPS_WHITE);
+              function_panel();
+          }
+          if(menu==2){
+              line++;
+              if(line>5) line=0;
+              rt_kprintf(" menu is %d  flag is %d   \n",menu,flag);
+              rt_kprintf(" line is %d     \n",line);
+          }
+      }else if(flag==2){
+          rt_sem_release(&sem_lock);//lock+1,解锁
+          Inter_Screen.Clear(IPS_WHITE);
+          //发车
+      }else if(flag==3){
+          Inter_Screen.Clear(IPS_WHITE);
+          message_panel();
+      }else{
+          Inter_Screen.Clear(IPS_WHITE);
+
+      }
+      menu=2;
+      rt_kprintf(" menu is %d  flag is %d   \n",menu,flag);
+
+}
+
+  void c_click (){
+
+      led1.LED_Toggle();
+      rt_kprintf("change is pressed!\n");
+      menu=1;
+
+}
+
+
+
+
+
+
+

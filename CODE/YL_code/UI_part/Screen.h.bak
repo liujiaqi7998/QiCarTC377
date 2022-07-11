@@ -1,0 +1,29 @@
+/*
+ * Screen.h
+ *
+ *  Created on: 2021Äê12ÔÂ27ÈÕ
+ *      Author: huyongliang
+ */
+
+#ifndef CODE_YL_CODE_UI_PART_SCREEN_H_BAK_
+#define CODE_YL_CODE_UI_PART_SCREEN_H_BAK_
+
+#include "display.h.bak"
+#include "YL_Library.h"
+#include "OJ_Library.h"
+
+
+
+void show_init(void);
+
+
+extern IPS_114 Inter_Screen;
+extern struct rt_semaphore sem_lock;
+extern uint16 line;
+
+
+
+
+#endif /* CODE_YL_CODE_UI_PART_SCREEN_H_BAK_ */
+
+

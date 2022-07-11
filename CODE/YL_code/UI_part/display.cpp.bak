@@ -1,0 +1,160 @@
+/*
+ * display.cpp
+ *
+ *  Created on: 2021年12月28日
+ *      Author: huyongliang
+ */
+
+    #include <Control.h.bak>
+#include "display.h"
+    #include "ui_font.h"
+    #include "Screen.h"
+    
+    uint8 menu;//界面的标志位
+    uint8 flag;//进入功能区标志位
+    double par;
+
+
+    //显示当前图片
+    void dis_curImg(uint8 *p){
+        uint32 i, j;
+        uint16 color = 0;
+
+        for(j=0;j<IPS114_W;j++){//IPS114_W
+            for(i=0;i<IPS114_H;i++){//IPS114_H
+                color = *(p +  j * IPS114_H + i ); //读取像素点
+                color = ((color & 0xff) << 8) | (color >> 8);
+                Inter_Screen.Draw_Point(i, j, color);
+            }
+        }
+
+}
+
+
+//    //UI界面左右混合
+//    void ui_Mix(uint8* next,uint8 *buf,uint8 num){
+//
+//    //切换界面的延时
+//    uint8 slideDelay = 2;
+//    uint32 i, j;
+//
+//    uint16 color = 0;
+//    uint16 temp = 0;
+//
+//    for (j = 0; j < IPS114_H-num; j++)
+//    {
+//        for (i = 0; i < IPS114_W; i++)
+//        {
+//            temp = *(buf + (j * IPS114_H / IPS114_H) * IPS114_W + i * IPS114_W / IPS114_W); //读取像素点
+//            color = (0x001f & ((temp) >> 3)) << 11;
+//            color = color | (((0x003f) & ((temp) >> 2)) << 5);
+//            color = color | (0x001f & ((temp) >> 3));
+//            Inter_Screen.Draw_Point(i,j,color);//该接口已被修改
+//        }
+//    }
+//
+//    for (j = IPS114_H-num; j < IPS114_H; j++)
+//    {
+//        for (i = 0; i < IPS114_W; i++)
+//        {
+//             temp = *(next + (j * IPS114_H / IPS114_H) * IPS114_W + i * IPS114_W / IPS114_W); //读取像素点
+//             color = (0x001f & ((temp) >> 3)) << 11;
+//             color = color | (((0x003f) & ((temp) >> 2)) << 5);
+//             color = color | (0x001f & ((temp) >> 3));
+//             Inter_Screen.Draw_Point(i,j,color);
+//         }
+//    }
+//
+//}
+
+//    //功能界面上下跳转
+//    void func_Appear(void){
+//
+//    uint8 moveDelay = 10;
+//
+//    while(1){
+//
+//
+//    }
+//}
+
+    void function_panel(void){
+
+        char x1[]={'l','_','k','p'};
+        char x2[]={'l','_','k','i'};
+        char x3[]={'l','_','k','d'};
+        char x4[]={'r','_','k','p'};
+        char x5[]={'r','_','k','i'};
+        char x6[]={'r','_','k','d'};
+
+        Inter_Screen.Show_String(0,0,x1);
+        Inter_Screen.Show_String(0,1,x2);
+        Inter_Screen.Show_String(0,2,x3);
+        Inter_Screen.Show_String(0,3,x4);
+        Inter_Screen.Show_String(0,4,x5);
+        Inter_Screen.Show_String(0,5,x6);
+
+        rt_thread_mdelay(20);
+}
+
+    void message_panel(void){
+
+        Inter_Screen.Show_String(0,0,"Here is the message panel!");
+        rt_thread_mdelay(1000);
+        Inter_Screen.Show_String(0,1,"The current project is running");
+        rt_thread_mdelay(1000);
+        Inter_Screen.Show_String(0,2,"car!");
+        rt_thread_mdelay(1000);
+        Inter_Screen.Show_String(0,3,"You can finish some task here");
+        rt_thread_mdelay(1000);
+        Inter_Screen.Show_String(0,4,"Such as change some parameter");
+        rt_thread_mdelay(1000);
+        Inter_Screen.Show_String(0,5,"run your car");
+        rt_thread_mdelay(1000);
+        Inter_Screen.Show_String(0,6,"and 'feel fish' !");
+        rt_thread_mdelay(1000);
+        Inter_Screen.Show_String(0,7,"All right, get out!");
+        rt_thread_mdelay(1000);
+}
+
+    void ui_InitImg(void)
+    {
+    // 加载开机图片
+    dis_curImg((uint8*)gImage_start);
+
+        rt_thread_mdelay(2000);
+        Inter_Screen.Clear(IPS_WHITE);
+
+    Inter_Screen.Show_String(0,0,"Welcome to YL's System!");
+//    rt_thread_mdelay(1000);
+    Inter_Screen.Show_String(0,1,"How is everything going");
+//    rt_thread_mdelay(1000);
+    Inter_Screen.Show_String(0,2,"I finished some functions");
+//    rt_thread_mdelay(1000);
+    Inter_Screen.Show_String(0,3,"If you have your own demands!");
+//    rt_thread_mdelay(1000);
+    Inter_Screen.Show_String(0,4,"Please use your hands!");
+//    rt_thread_mdelay(1000);
+    Inter_Screen.Show_String(0,5,"But now just enjoy!");
+//    rt_thread_mdelay(1000);
+
+//        rt_thread_mdelay(3000);
+        Inter_Screen.Clear(IPS_WHITE);
+
+    // 预加载function图标
+    dis_curImg((uint8*)gImage_set);//显示first function ui
+    menu=1;
+    flag=1;
+
+}
+
+
+
+
+
+
+
+
+
+
+

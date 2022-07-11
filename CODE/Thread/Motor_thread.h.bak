@@ -1,0 +1,20 @@
+/*
+ * PID_thread.h
+ *
+ *  Created on: 2021Äê11ÔÂ30ÈÕ
+ *      Author: huyongliang
+ */
+
+#ifndef CODE_THREAD_MOTOR_THREAD_H_BAK_
+#define CODE_THREAD_MOTOR_THREAD_H_BAK_
+
+#include "YL_Library.h"
+#include "OJ_Library.h"
+#include "Qi_Library.h"
+
+#include "Motor_run.h"
+
+void Motor_init(void);
+
+
+#endif /* CODE_THREAD_MOTOR_THREAD_H_BAK_ */

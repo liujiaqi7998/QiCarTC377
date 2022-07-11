@@ -1,0 +1,57 @@
+/*
+ * PID_thread.cpp
+ *
+ *  Created on: 2021年11月30日
+ *      Author: huyongliang
+ */
+
+#include "Motor_thread.h"
+
+Servo_Param Param{ATOM0_CH1_P33_9, 50, 2.12, 0.92, 1.563, 1.320, 100, 0}; // @suppress("Ч")
+Servo servo = Servo(Param);
+
+// 线程控制块指针，创建线程时的标准操作
+static rt_thread_t Motor_tid = RT_NULL;
+
+void Motor_entry(void *parameter);
+
+  void Motor_init(void) {
+
+         servo.Init();
+         Motor_run_Init();
+
+         Motor_tid = rt_thread_create("Motor", // 线程名称
+                                      Motor_entry, // 线程入口函数
+                                      RT_NULL, // 线程参数，RT_NULL表示无参，类似于void
+                                      1024,
+                                      10,
+                                      10);
+
+         //启动显示线程
+         if(Motor_tid != RT_NULL )
+         {
+             rt_thread_startup(Motor_tid);
+         }
+}
+
+  MSH_CMD_EXPORT(Motor_init,run);
+
+  void Motor_entry(void *parameter) {
+
+      int num=5;
+      while(num--){
+
+      Motor_run_loop();
+      rt_kprintf("Motor\n");
+//      rt_enter_critical();
+      rt_thread_mdelay(10);
+      }
+}
+
+
+
+
+
+
+
+

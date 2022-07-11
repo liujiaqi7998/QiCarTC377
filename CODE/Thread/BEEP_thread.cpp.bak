@@ -1,0 +1,75 @@
+/*
+ * BEEP.cpp
+ *
+ *  Created on: 2021年12月1日
+ *      Author: huyongliang
+ */
+
+#include "Thread/BEEP_thread.h"
+
+#define RT_WAITING_FOREVER -1 //定义接收模式
+
+#define THREAD_PRIORITY 10
+#define THREAD_TIMESLICE 5
+
+// 线程控制块指针，创建线程时的标准操作
+static rt_thread_t BEEP_tid = RT_NULL;
+//    创建邮箱
+rt_mailbox_t buzzer_mailbox;
+
+struct rt_mailbox buz_mail;
+
+void BEEP_entry(void *parameter);
+
+
+
+    int BEEP_init(void){
+    //初始化蜂鸣器
+    Buzzer buzzer = Buzzer(ATOM0_CH6_P02_6);
+
+    //创建邮箱
+    buzzer_mailbox = rt_mb_create("buzzer", 5, RT_IPC_FLAG_FIFO);
+
+    //创建蜂鸣器线程
+    BEEP_tid = rt_thread_create("buzzer",
+                                 BEEP_entry,
+                                 RT_NULL,
+                                 1024,
+                                 20,//pri
+                                 30);
+
+     //启动蜂鸣器线程
+       if(BEEP_tid != RT_NULL )
+     {
+       rt_thread_startup(BEEP_tid);
+     }
+
+    return 0;
+}
+/* 导 出 到 msh 命 令 列 表 中 */
+    MSH_CMD_EXPORT(BEEP_init,di);
+
+void BEEP_entry(void *parameter){
+        uint32 mb_data=0;
+        GPIO gpio=GPIO(P02_6,GPO,GPIO_HIGH,NO_PULL);
+        gpio.Init();
+
+           rt_kprintf("here\n");
+
+           //接收邮箱数据，如果没有数据则持续等待并释放CPU控制权
+             if (rt_mb_recv(buzzer_mailbox, (unsigned long *)&mb_data, RT_WAITING_FOREVER) == RT_EOK)
+           {
+             rt_kprintf("rec %d\n",mb_data);
+             gpio.Pin_High();    //打开蜂鸣器
+             rt_thread_mdelay(mb_data);//延时
+             gpio.Pin_Low();     //关闭蜂鸣器
+            }
+
+
+          rt_kprintf("beep\n");
+          rt_thread_mdelay(10);
+
+
+}
+
+

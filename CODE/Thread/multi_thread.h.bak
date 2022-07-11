@@ -1,0 +1,21 @@
+/*
+ * multi_thread.h
+ *
+ *  Created on: 2021Äê11ÔÂ30ÈÕ
+ *      Author: huyongliang
+ */
+
+#ifndef CODE_MULTI_THREAD_H_
+#define CODE_MULTI_THREAD_H_
+
+
+#include "BEEP_thread.h.bak"
+#include "Button_thread.h.bak"
+#include "Motor_thread.h.bak"
+#include "TIMER_thread.h.bak"
+
+
+
+#endif /* CODE_MULTI_THREAD_H_ */
+
+

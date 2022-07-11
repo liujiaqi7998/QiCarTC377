@@ -1,0 +1,23 @@
+/*
+ * BEEP.h
+ *
+ *  Created on: 2021年12月1日
+ *      Author: huyongliang
+ */
+
+#ifndef CODE_THREAD_BEEP_THREAD_H_BAK_
+#define CODE_THREAD_BEEP_THREAD_H_BAK_
+
+#include "YL_Library.h"
+#include "OJ_Library.h"
+
+
+/* 邮 箱 控 制 块 */
+extern struct rt_mailbox buz_mail;
+
+int BEEP_init(void);
+
+
+
+
+#endif /* CODE_THREAD_BEEP_THREAD_H_BAK_ */

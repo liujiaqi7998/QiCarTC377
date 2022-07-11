@@ -1,0 +1,25 @@
+/*
+ * mechine.h
+ *
+ *  Created on: 2021Äê12ÔÂ27ÈÕ
+ *      Author: huyongliang
+ */
+
+#ifndef CODE_YL_CODE_MECHINE_H_BAK_
+#define CODE_YL_CODE_MECHINE_H_BAK_
+
+#include "Function_part/Control.h.bak"
+#include "UI_part/display.h.bak"
+#include "UI_part/Screen.h.bak"
+
+
+
+
+
+
+
+
+
+#endif /* CODE_YL_CODE_MECHINE_H_BAK_ */
+
+

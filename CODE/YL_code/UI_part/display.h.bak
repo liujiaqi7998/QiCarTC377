@@ -1,0 +1,30 @@
+/*
+ * display.h
+ *
+ *  Created on: 2021Äê12ÔÂ28ÈÕ
+ *      Author: huyongliang
+ */
+
+#ifndef CODE_YL_CODE_UI_PART_DISPLAY_H_BAK_
+#define CODE_YL_CODE_UI_PART_DISPLAY_H_BAK_
+
+#include "YL_Library.h"
+#include "OJ_Library.h"
+
+
+
+void dis_curImg(uint8 *p);
+void ui_InitImg(void);
+
+//void ui_Refresh(uint8 *buf);
+//void ui_Mix(uint8* next,uint8 *buf);
+
+void function_panel(void);
+void message_panel(void);
+
+extern uint8 menu;
+extern uint8 flag;
+extern double par;
+
+#endif /* CODE_YL_CODE_UI_PART_DISPLAY_H_BAK_ */
+
